@@ -1,0 +1,275 @@
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header-banner">
+    <div class="banner-contenido">
+      <div class="header-izq">
+        <div class="header-badge">
+          <mat-icon>medication</mat-icon>
+        </div>
+        <div class="banner-textos">
+          <h1 class="titulo">Módulo Inventario</h1>
+          <p class="subtitulo">Control integral de medicamentos e insumos farmacéuticos</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi-item">
+      <div class="kpi-icon kpi-icon--blue">
+        <mat-icon>inventory_2</mat-icon>
+      </div>
+      <div>
+        <div class="kpi-val">{{ totalRegistros }}</div>
+        <div class="kpi-label">Total de productos</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon kpi-icon--green">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <div>
+        <div class="kpi-val">{{ porcentajeOptimo }}%</div>
+        <div class="kpi-label">Stock en nivel óptimo</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon kpi-icon--red">
+        <mat-icon>warning</mat-icon>
+      </div>
+      <div>
+        <div class="kpi-val">{{ itemsStockBajo }}</div>
+        <div class="kpi-label">Ítems con stock bajo</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon kpi-icon--amber">
+        <mat-icon>event_busy</mat-icon>
+      </div>
+      <div>
+        <div class="kpi-val">{{ itemsPorVencer }}</div>
+        <div class="kpi-label">Por vencer (≤ 30 días)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MÓDULOS -->
+  <div class="cards" *ngIf="!cargando">
+
+    <!-- MEDICAMENTOS -->
+    <div class="card medicamentos" (click)="abrirMedicamentos()">
+      <div class="card-header">
+        <div class="card-header__left">
+          <div class="card-header__icono">
+            <mat-icon>medication</mat-icon>
+          </div>
+          <h2 class="card-header__titulo">Medicamentos</h2>
+        </div>
+        <div class="card-header__contador">
+          <span class="card-header__numero">{{ totalMedicamentos }}</span>
+          <span class="card-header__label">registros</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-body__desc">
+          Fármacos con y sin receta: stock, lotes, vencimientos y registro sanitario.
+        </p>
+        <div>
+          <div class="stock-bar-labels">
+            <span>Disponibilidad de stock</span>
+            <span>{{ stockMedicamentos }}%</span>
+          </div>
+          <div class="stock-bar-track">
+            <div class="stock-bar-fill" [style.width]="stockMedicamentos + '%'"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-stats">
+        <div class="card-stat">
+          <span class="card-stat__val">$ {{ valorTotalMedicamentos | number:'1.0-0' }}</span>
+          <span class="card-stat__label">Valor total</span>
+        </div>
+        <div class="card-stat">
+          <span class="card-stat__val">{{ stockBajoMedicamentos }}</span>
+          <span class="card-stat__label">Stock bajo</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>Ver módulo</span>
+        <mat-icon>arrow_forward</mat-icon>
+      </div>
+    </div>
+
+    <!-- INSUMOS MÉDICOS -->
+    <div class="card insumos" (click)="abrirInsumos()">
+      <div class="card-header">
+        <div class="card-header__left">
+          <div class="card-header__icono">
+            <mat-icon>medical_services</mat-icon>
+          </div>
+          <h2 class="card-header__titulo">Insumos Médicos</h2>
+        </div>
+        <div class="card-header__contador">
+          <span class="card-header__numero">{{ totalInsumos }}</span>
+          <span class="card-header__label">registros</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-body__desc">
+          Guantes, jeringas, material de curación e instrumental de diagnóstico.
+        </p>
+        <div>
+          <div class="stock-bar-labels">
+            <span>Disponibilidad de stock</span>
+            <span>{{ stockInsumos }}%</span>
+          </div>
+          <div class="stock-bar-track">
+            <div class="stock-bar-fill" [style.width]="stockInsumos + '%'"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-stats">
+        <div class="card-stat">
+          <span class="card-stat__val">$ {{ valorTotalInsumos | number:'1.0-0' }}</span>
+          <span class="card-stat__label">Valor total</span>
+        </div>
+        <div class="card-stat">
+          <span class="card-stat__val">{{ stockBajoInsumos }}</span>
+          <span class="card-stat__label">Stock bajo</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>Ver módulo</span>
+        <mat-icon>arrow_forward</mat-icon>
+      </div>
+    </div>
+
+    <!-- CUIDADO PERSONAL -->
+    <div class="card cuidado" (click)="abrirCuidadoPersonal()">
+      <div class="card-header">
+        <div class="card-header__left">
+          <div class="card-header__icono">
+            <mat-icon>spa</mat-icon>
+          </div>
+          <h2 class="card-header__titulo">Cuidado Personal</h2>
+        </div>
+        <div class="card-header__contador">
+          <span class="card-header__numero">{{ totalCuidado }}</span>
+          <span class="card-header__label">registros</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-body__desc">
+          Cosméticos, higiene, cuidado infantil y suplementos de venta libre.
+        </p>
+        <div>
+          <div class="stock-bar-labels">
+            <span>Disponibilidad de stock</span>
+            <span>{{ stockCuidado }}%</span>
+          </div>
+          <div class="stock-bar-track">
+            <div class="stock-bar-fill" [style.width]="stockCuidado + '%'"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-stats">
+        <div class="card-stat">
+          <span class="card-stat__val">$ {{ valorTotalCuidado | number:'1.0-0' }}</span>
+          <span class="card-stat__label">Valor total</span>
+        </div>
+        <div class="card-stat">
+          <span class="card-stat__val">{{ stockBajoCuidado }}</span>
+          <span class="card-stat__label">Stock bajo</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>Ver módulo</span>
+        <mat-icon>arrow_forward</mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="cargando" class="loading">
+    <p>Cargando datos...</p>
+  </div>
+
+  <!-- DATOS EXTRAS -->
+  <div class="bottom-row">
+    <!-- Actividad Reciente -->
+    <div class="panel">
+      <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <mat-icon>history</mat-icon>
+          <h3 class="panel-header__titulo">Actividad Reciente</h3>
+        </div>
+        <div class="paginacion-manual" *ngIf="actividadReciente.length > itemsPorPaginaAct">
+          <button mat-icon-button [disabled]="paginaActualAct === 1" (click)="paginaActualAct = paginaActualAct - 1">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <span>{{ paginaActualAct }} / {{ totalPaginasAct() }}</span>
+          <button mat-icon-button [disabled]="paginaActualAct >= totalPaginasAct()" (click)="paginaActualAct = paginaActualAct + 1">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="actividad-item" *ngFor="let act of obtenerActividadPaginada()">
+          <div class="actividad-dot"
+            [class.actividad-dot--m]="act.modulo === 'medicamentos'"
+            [class.actividad-dot--n]="act.modulo === 'insumos'"
+            [class.actividad-dot--e]="act.modulo === 'cuidado'"
+          ></div>
+          <div class="actividad-texto">
+            <strong>{{ act.nombre }}</strong>
+            <span>{{ act.accion }} · {{ act.moduloLabel }}</span>
+          </div>
+          <div class="actividad-tiempo">{{ act.tiempo }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alertas de Inventario (stock bajo + vencimientos) -->
+    <div class="panel">
+      <div class="panel-header alerta-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <mat-icon class="icono-alerta">warning_amber</mat-icon>
+          <h3 class="panel-header__titulo titulo-alerta">Alertas de Inventario</h3>
+        </div>
+        <div class="paginacion-manual" *ngIf="alertasStock.length > itemsPorPaginaAle">
+          <button mat-icon-button [disabled]="paginaActualAle === 1" (click)="paginaActualAle = paginaActualAle - 1">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <span>{{ paginaActualAle }} / {{ totalPaginasAle() }}</span>
+          <button mat-icon-button [disabled]="paginaActualAle >= totalPaginasAle()" (click)="paginaActualAle = paginaActualAle + 1">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="alerta-item" *ngFor="let alerta of obtenerAlertasPaginated()">
+          <div class="alerta-icono">
+            <mat-icon>{{ alerta.icono }}</mat-icon>
+          </div>
+          <div class="alerta-info">
+            <strong>{{ alerta.nombre }}</strong>
+            <span *ngIf="alerta.tipo === 'stock'">{{ alerta.modulo }} · Stock actual: {{ alerta.detalle }}</span>
+            <span *ngIf="alerta.tipo === 'vencimiento'">{{ alerta.modulo }} · Vence: {{ alerta.detalle }}</span>
+          </div>
+          <span class="alerta-badge"
+            [class.alerta-badge--critico]="alerta.nivel === 'critico'"
+            [class.alerta-badge--bajo]="alerta.nivel === 'bajo'"
+            [class.alerta-badge--vencimiento]="alerta.nivel === 'vencimiento'"
+          >
+            {{ alerta.nivel === 'critico' ? 'Crítico' : (alerta.nivel === 'vencimiento' ? 'Por vencer' : 'Bajo') }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

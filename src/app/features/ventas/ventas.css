@@ -1,0 +1,403 @@
+/* ventas.css — alineado al design system de FarmaSystem */
+:host {
+  /* Tokens compartidos con el resto del sistema */
+  --color-primario:      #133b4b;
+
+  --color-bg:            #f1f5f9;
+  --color-card:          #ffffff;
+  --color-borde:         #e2e8f0;
+  --color-texto:         #0f172a;
+  --color-suave:         #64748b;
+  --color-fila:          #f8fafc;
+
+  /* Acciones globales — mismos tonos que inventario */
+  --color-guardar:       #16a34a;
+  --color-guardar-suave: #f5fff5;
+  --color-nuevo:         #1d4ed8;
+  --color-nuevo-suave:   #eff6ff;
+
+  --color-alerta:        #c0392b;
+  --color-alerta-suave:  #fef2f2;
+
+  --radio:               12px;
+  --radio-sm:            8px;
+  --sombra:              0 2px 8px rgba(0,0,0,0.07), 0 0 1px rgba(0,0,0,0.06);
+  --sombra-hover:        0 10px 32px rgba(0,0,0,0.13);
+
+  --font-titulo:         'Georgia','Times New Roman',serif;
+  --font-cuerpo:         'Segoe UI', system-ui, sans-serif;
+  --trans:               0.22s ease;
+
+  display: block;
+  background: var(--color-bg);
+  min-height: 100vh;
+  font-family: var(--font-cuerpo);
+  color: var(--color-texto);
+}
+
+* { box-sizing: border-box; }
+
+/* ══════════════════════════════════════
+   HEADER DEL MÓDULO — mismo lenguaje que header-banner
+══════════════════════════════════════ */
+.modulo-header {
+  background: var(--color-primario);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 32px;
+  margin: 28px 36px 32px;
+  border-radius: var(--radio);
+  box-shadow: 0 10px 25px rgba(19, 59, 75, 0.20);
+  position: relative;
+  overflow: hidden;
+}
+
+.modulo-header h1 {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.modulo-header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+}
+
+/* ══════════════════════════════════════
+   GRID PRINCIPAL
+══════════════════════════════════════ */
+.contenedor-ventas {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  padding: 0 36px 56px;
+  align-items: start;
+}
+
+.panel-izquierdo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tarjeta-pos {
+  background: var(--color-card);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 20px;
+}
+
+.tarjeta-pos h3 {
+  margin: 0 0 14px 0;
+  font-family: var(--font-titulo);
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--color-primario);
+}
+
+/* ══════════════════════════════════════
+   FORMULARIOS — mismos campos que inventario
+══════════════════════════════════════ */
+.busqueda-container {
+  width: 100%;
+}
+
+.select-tabla-container {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  align-items: center;
+}
+
+input[type="text"], select, input[type="number"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  font-size: 14px;
+  font-family: var(--font-cuerpo);
+  outline: none;
+  background: var(--color-bg);
+  color: var(--color-texto);
+  box-sizing: border-box;
+  height: 44px;
+  transition: border-color var(--trans), box-shadow var(--trans);
+}
+
+input[type="text"]:focus, select:focus, input[type="number"]:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(19, 59, 75, 0.10);
+}
+
+.select-producto {
+  flex-grow: 2;
+  width: 100%;
+  min-width: 250px;
+  background-color: var(--color-bg) !important;
+  color: var(--color-texto);
+  cursor: pointer;
+}
+
+.select-producto option {
+  padding: 10px;
+  background: var(--color-card);
+  color: var(--color-texto);
+}
+
+/* Botón Agregar Ítem — usa el color de "nuevo" del sistema */
+.btn-agregar {
+  background: var(--color-nuevo);
+  color: #fff;
+  border: none;
+  padding: 0 24px;
+  border-radius: var(--radio-sm);
+  font-weight: 700;
+  font-family: var(--font-cuerpo);
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 13px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--trans), transform var(--trans);
+}
+
+.btn-agregar:hover {
+  background: #1b66ca;
+  transform: translateY(-1px);
+}
+
+/* CLIENTE SELECCIONADO — mismo tono "éxito" que el resto del sistema */
+.cliente-activo {
+  margin-top: 12px;
+  background: var(--color-guardar-suave);
+  padding: 12px;
+  border-radius: var(--radio-sm);
+  font-size: 13px;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  line-height: 1.5;
+}
+
+.cliente-activo p { margin: 2px 0; }
+
+/* ══════════════════════════════════════
+   TABLA DETALLE FACTURA — mismo criterio que inventario/reportes
+══════════════════════════════════════ */
+.tabla-factura {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-factura th {
+  text-align: left;
+  padding: 11px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--color-texto);
+  background: var(--color-fila);
+  border-bottom: 2px solid var(--color-borde);
+  font-family: var(--font-titulo);
+}
+
+.tabla-factura td {
+  padding: 11px 10px;
+  font-size: 13px;
+  color: var(--color-texto);
+  border-bottom: 1px solid var(--color-borde);
+  font-family: var(--font-cuerpo);
+}
+
+.badge-categoria {
+  background: var(--color-bg);
+  border: 1px solid var(--color-borde);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-suave);
+}
+
+.input-cant {
+  padding: 6px !important;
+  text-align: center;
+  max-width: 75px;
+  height: 32px !important;
+}
+
+.btn-eliminar {
+  background: none;
+  border: none;
+  color: var(--color-alerta);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: var(--radio-sm);
+  transition: background var(--trans), transform var(--trans);
+}
+
+.btn-eliminar:hover {
+  background: var(--color-alerta-suave);
+  transform: scale(1.05);
+}
+
+.carrito-vacio {
+  text-align: center;
+  color: var(--color-suave);
+  padding: 40px !important;
+  font-style: italic;
+}
+
+/* ══════════════════════════════════════
+   PANEL DERECHO: TOTALES
+══════════════════════════════════════ */
+.panel-derecho {
+  height: max-content;
+}
+
+.tarjeta-totales {
+  background: var(--color-card);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 24px;
+  position: sticky;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tarjeta-totales h2 {
+  margin: 0 0 16px 0;
+  font-family: var(--font-titulo);
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--color-primario);
+}
+
+.tarjeta-totales hr {
+  border: 0;
+  border-top: 1px solid var(--color-borde);
+  margin-bottom: 16px;
+}
+
+.fila-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: var(--color-texto);
+}
+
+.total-destacado {
+  font-family: var(--font-titulo);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-primario);
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px dashed var(--color-borde);
+}
+
+.metodo-pago-container {
+  margin: 20px 0 24px 0;
+}
+
+.metodo-pago-container h3 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 12px;
+  color: var(--color-texto);
+}
+
+.metodo-pago-container label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--color-texto);
+  cursor: pointer;
+}
+
+/* Botón de Procesamiento de Factura — mismo verde "guardar" del sistema */
+.btn-finalizar {
+  width: 100%;
+  background: var(--color-guardar);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: var(--radio-sm);
+  font-weight: 700;
+  font-family: var(--font-cuerpo);
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(22, 163, 74, 0.2);
+  transition: background var(--trans), transform var(--trans);
+}
+
+.btn-finalizar:hover:not(:disabled) {
+  background: #12873d;
+  transform: translateY(-1px);
+}
+
+.btn-finalizar:disabled {
+  background: var(--color-borde);
+  color: var(--color-suave);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — mismos breakpoints que el resto del sistema
+══════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .contenedor-ventas {
+    grid-template-columns: 1fr;
+    padding: 0 16px 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modulo-header {
+    margin: 16px;
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+
+  .modulo-header h1 {
+    font-size: 20px;
+  }
+
+  .select-tabla-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .select-producto {
+    min-width: 100%;
+  }
+
+  .btn-agregar {
+    width: 100%;
+  }
+}

@@ -1,0 +1,530 @@
+<div class="modulo-header">
+
+  <div class="icono">
+    🛒
+  </div>
+
+  <div>
+
+    <h1>
+      MÓDULO DE VENTAS Y FACTURACIÓN
+    </h1>
+
+    <p>
+      Punto de venta y emisión de comprobantes
+    </p>
+
+  </div>
+
+</div>
+
+<div class="contenedor-ventas">
+
+  <!-- ========================================= -->
+  <!-- PANEL IZQUIERDO -->
+  <!-- ========================================= -->
+
+  <div class="panel-izquierdo">
+
+    <!-- ================= CLIENTE ================= -->
+
+    <div class="tarjeta-pos">
+
+      <h3>
+        👤 Datos del Cliente
+      </h3>
+
+      <div class="busqueda-container">
+
+        <input
+
+          type="text"
+
+          maxlength="10"
+
+          placeholder="Ingrese la cédula..."
+
+          [(ngModel)]="cedulaInput"
+
+          (input)="onCedulaChange()"
+
+        >
+
+      </div>
+
+      <div
+
+        class="cliente-activo"
+
+        *ngIf="clienteSeleccionado"
+
+      >
+
+        <p>
+
+          <strong>
+
+            Razón Social:
+
+          </strong>
+
+          {{clienteSeleccionado.nombre}}
+
+        </p>
+
+        <p>
+
+          <strong>
+
+            Identificación:
+
+          </strong>
+
+          {{clienteSeleccionado.identificacion}}
+
+        </p>
+
+        <p *ngIf="clienteSeleccionado.correo">
+
+          <strong>
+
+            Correo:
+
+          </strong>
+
+          {{clienteSeleccionado.correo}}
+
+        </p>
+
+        <p *ngIf="clienteSeleccionado.direccion">
+
+          <strong>
+
+            Dirección:
+
+          </strong>
+
+          {{clienteSeleccionado.direccion}}
+
+        </p>
+
+        <p *ngIf="clienteSeleccionado.telefono">
+
+          <strong>
+
+            Teléfono:
+
+          </strong>
+
+          {{clienteSeleccionado.telefono}}
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ================= PRODUCTOS ================= -->
+
+    <div class="tarjeta-pos">
+
+      <h3>
+
+        📦 Productos
+
+      </h3>
+
+      <div class="select-tabla-container">
+
+        <select
+
+          [(ngModel)]="tablaSeleccionada"
+
+          (change)="cambiarCategoria()"
+
+        >
+
+          <option
+
+            value="medicamentos"
+
+          >
+
+            Medicamentos
+
+          </option>
+
+          <option
+
+            value="insumos_medicos"
+
+          >
+
+            Insumos Médicos
+
+          </option>
+
+          <option
+
+            value="cuidado_personal"
+
+          >
+
+            Cuidado Personal
+
+          </option>
+
+        </select>
+
+        <select
+
+          [(ngModel)]="productoSeleccionadoId"
+
+          class="select-producto"
+
+        >
+
+          <option value="">
+
+            -- Seleccione un producto --
+
+          </option>
+
+          <option
+
+            *ngFor="let p of listaProductos"
+
+            [value]="p.id"
+
+          >
+
+            {{p.nombre}}
+
+            -
+
+            ${{p.precio_venta | number:'1.2-2'}}
+
+            -
+
+            Stock:
+
+            {{p.stock}}
+
+          </option>
+
+        </select>
+
+        <button
+
+          class="btn-agregar"
+
+          type="button"
+
+          (click)="agregarProductoSeleccionado()"
+
+        >
+
+          AGREGAR ➕
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- ================= DETALLE FACTURA ================= -->
+
+    <div class="tarjeta-pos">
+
+      <h3>
+
+        📋 Detalle de la Factura
+
+      </h3>
+
+      <table class="tabla-factura">
+
+        <thead>
+
+          <tr>
+
+            <th>
+
+              Producto
+
+            </th>
+
+            <th>
+
+              Categoría
+
+            </th>
+
+            <th width="90">
+
+              Cant.
+
+            </th>
+
+            <th>
+
+              Precio
+
+            </th>
+
+            <th>
+
+              Subtotal
+
+            </th>
+
+            <th width="40">
+
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+                      <tr *ngFor="let item of carrito; let i = index">
+
+            <td>
+
+              {{ item.nombre }}
+
+            </td>
+
+            <td>
+
+              <span class="badge-categoria">
+
+                {{ item.tabla_producto | uppercase }}
+
+              </span>
+
+            </td>
+
+            <td>
+
+              <input
+
+                class="input-cant"
+
+                type="number"
+
+                min="1"
+
+                [(ngModel)]="item.cantidad"
+
+                (change)="actualizarCantidad(item)"
+
+              >
+
+            </td>
+
+            <td>
+
+              $ {{ item.precio_unitario | number:'1.2-2' }}
+
+            </td>
+
+            <td>
+
+              $ {{ item.subtotal | number:'1.2-2' }}
+
+            </td>
+
+            <td>
+
+              <button
+
+                type="button"
+
+                class="btn-eliminar"
+
+                (click)="eliminarDelCarrito(i)"
+
+              >
+
+                ✕
+
+              </button>
+
+            </td>
+
+          </tr>
+
+          <tr *ngIf="carrito.length===0">
+
+            <td
+
+              colspan="6"
+
+              class="carrito-vacio"
+
+            >
+
+              No existen productos agregados.
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <!-- ========================================= -->
+  <!-- PANEL DERECHO -->
+  <!-- ========================================= -->
+
+  <div class="panel-derecho">
+
+    <div class="tarjeta-totales">
+
+      <h2>
+
+        Resumen de Cobro
+
+      </h2>
+
+      <hr>
+
+      <div class="fila-total">
+
+        <span>
+
+          Subtotal
+
+        </span>
+
+        <span>
+
+          $ {{ subtotal | number:'1.2-2' }}
+
+        </span>
+
+      </div>
+
+      <div class="fila-total">
+
+        <span>
+
+          IVA (15%)
+
+        </span>
+
+        <span>
+
+          $ {{ iva | number:'1.2-2' }}
+
+        </span>
+
+      </div>
+
+      <div class="fila-total total-destacado">
+
+        <span>
+
+          TOTAL
+
+        </span>
+
+        <span>
+
+          $ {{ total | number:'1.2-2' }}
+
+        </span>
+
+      </div>
+
+      <div class="metodo-pago-container">
+
+        <h3>
+
+          Método de Pago
+
+        </h3>
+
+        <label>
+
+          <input
+
+            type="radio"
+
+            value="efectivo"
+
+            [(ngModel)]="metodoPago"
+
+            name="metodoPago"
+
+          >
+
+          💵 Efectivo
+
+        </label>
+
+        <label>
+
+          <input
+
+            type="radio"
+
+            value="tarjeta"
+
+            [(ngModel)]="metodoPago"
+
+            name="metodoPago"
+
+          >
+
+          💳 Tarjeta
+
+        </label>
+
+        <label>
+
+          <input
+
+            type="radio"
+
+            value="transferencia"
+
+            [(ngModel)]="metodoPago"
+
+            name="metodoPago"
+
+          >
+
+          🏦 Transferencia
+
+        </label>
+
+      </div>
+
+      <button
+
+        class="btn-finalizar"
+
+        type="button"
+
+        [disabled]="procesando || carrito.length===0"
+
+        (click)="finalizarVenta()"
+
+      >
+
+        {{ procesando ? 'PROCESANDO...' : 'PROCESAR FACTURA 🖨️' }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

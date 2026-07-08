@@ -1,0 +1,191 @@
+<div class="container">
+  <div class="header-banner banner--cuidado"> <div class="banner-contenido">
+      <div class="header-izq">
+        <div class="header-badge">
+          <mat-icon>face</mat-icon>
+        </div>
+        <div class="banner-textos">
+          <h1 class="titulo">Cuidado Personal e Higiene</h1>
+          <p class="subtitulo">Artículos de aseo, cremas, champús y cuidado dermatológico</p>
+        </div>
+      </div>
+      <div class="banner-chip">
+        <mat-icon>clean_hands</mat-icon>
+        {{ dataSource.data.length }} artículos
+      </div>
+    </div>
+  </div>
+
+  <div class="inner">
+    <div class="layout-grid">
+      <div class="form-panel form-panel--cuidado">
+        <div class="form-panel__header">
+          <mat-icon>{{ modoEdicion ? 'edit_note' : 'add_box' }}</mat-icon>
+          <h3 class="form-panel__titulo">{{ modoEdicion ? 'Modificar Artículo' : 'Nuevo Artículo' }}</h3>
+        </div>
+
+        <div class="form-panel__body">
+          <form [formGroup]="form" (ngSubmit)="guardar()">
+            <div class="campo-grupo">
+              <div class="campo-label"><mat-icon>qr_code</mat-icon> Código</div>
+              <input class="campo-input" formControlName="codigo" readonly>
+            </div>
+
+            <div class="campo-grupo">
+              <div class="campo-label"><mat-icon>shopping_bag</mat-icon> Producto</div>
+              <input class="campo-input" formControlName="nombre" placeholder="Ej: Crema CeraVe Hidratante">
+            </div>
+
+            <div class="form-grid-2">
+              <div class="campo-grupo">
+                <div class="campo-label"><mat-icon>category</mat-icon> Categoría</div>
+                <select class="campo-input" formControlName="categoria">
+                  <option value="" disabled selected>Seleccione...</option>
+                  <option *ngFor="let cat of categorias" [value]="cat.nombre">
+                    {{ cat.nombre }}
+                  </option>
+                </select>
+              </div>
+              <div class="campo-grupo">
+                <div class="campo-label"><mat-icon>stars</mat-icon> Marca</div>
+                <input class="campo-input" formControlName="marca" placeholder="Ej: CeraVe">
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="campo-grupo">
+                <div class="campo-label"><mat-icon>inventory</mat-icon> Stock</div>
+                <input class="campo-input" type="number" min="0" formControlName="stock" placeholder="0">
+              </div>
+              <div class="campo-grupo">
+                <div class="campo-label"><mat-icon>straighten</mat-icon> Unidad</div>
+                <input class="campo-input" formControlName="unidad_medida" placeholder="Frasco, Tubo...">
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="campo-grupo">
+                <div class="campo-label"><mat-icon>shopping_cart</mat-icon> P. Compra</div>
+                <input class="campo-input" type="number" min="0" formControlName="precio_compra" placeholder="0.00">
+              </div>
+              <div class="campo-grupo">
+                <div class="campo-label"><mat-icon>attach_money</mat-icon> P. Venta</div>
+                <input class="campo-input" type="number" min="0" formControlName="precio_venta" placeholder="0.00">
+              </div>
+            </div>
+
+            <div class="botones-form">
+              <button class="btn-guardar" type="submit" [disabled]="form.invalid">
+                <mat-icon>{{ modoEdicion ? 'edit' : 'save' }}</mat-icon> Guardar
+              </button>
+              <button class="btn-nuevo" type="button" (click)="nuevoRegistro()">
+                <mat-icon>add</mat-icon> Nuevo
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="tabla-panel">
+        <div class="filter-bar">
+          <div class="filter-bar__campos">
+            <div class="filtro-campo">
+              <div class="filtro-label"><mat-icon>search</mat-icon> Buscar en Higiene</div>
+              <input class="filtro-input" (keyup)="aplicarFiltro($event)" placeholder="Filtrar por nombre...">
+            </div>
+          </div>
+        </div>
+
+        <mat-card class="tabla-card tabla-card--cuidado">
+          <div class="tabla-card__header">
+            <div class="tabla-card__titulo-wrap">
+              <mat-icon>table_rows</mat-icon>
+              <h3 class="tabla-card__titulo">Góndola de Cuidado Personal</h3>
+            </div>
+            <span class="tabla-card__count">{{ dataSource.data.length }} registros</span>
+          </div>
+
+          <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" matSort matSortActive="codigo" matSortDirection="asc" matSortDisableClear>
+
+              <ng-container matColumnDef="codigo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
+                <td mat-cell *matCellDef="let e" class="td-codigo"> {{e.codigo}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Producto </th>
+                <td mat-cell *matCellDef="let e" class="td-desc"> {{e.nombre}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="marca">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
+                <td mat-cell *matCellDef="let e"> {{e.marca || '—'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="categoria">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
+                <td mat-cell *matCellDef="let e"> {{e.categoria}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="unidad_medida">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Unidad </th>
+                <td mat-cell *matCellDef="let e"> {{e.unidad_medida || '—'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="stock">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Stock </th>
+                <td mat-cell *matCellDef="let e">
+                  <span class="stock-indicador" [class.stock-critico]="e.stock <= 5" [class.stock-bajo]="e.stock > 5 && e.stock <= 15">
+                    {{e.stock}}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="stock_minimo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Stock Mín. </th>
+                <td mat-cell *matCellDef="let e"> {{e.stock_minimo}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="precio_compra">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Compra </th>
+                <td mat-cell *matCellDef="let e" class="td-precio"> ${{e.precio_compra}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="precio_venta">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> P. Venta </th>
+                <td mat-cell *matCellDef="let e" class="td-precio"> ${{e.precio_venta}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="fecha_ingreso">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> F. Ingreso </th>
+                <td mat-cell *matCellDef="let e"> {{e.fecha_ingreso | date:'dd/MM/yyyy'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="activo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                <td mat-cell *matCellDef="let e">
+                  <span class="badge" [class.badge-activo]="e.activo" [class.badge-inactivo]="!e.activo">
+                    {{ e.activo ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef class="td-acciones"> Acciones </th>
+                <td mat-cell *matCellDef="let e" class="td-acciones">
+                  <button mat-icon-button class="btn-icono btn-editar" (click)="editar(e)"><mat-icon>edit</mat-icon></button>
+                  <button mat-icon-button class="btn-icono btn-eliminar" (click)="eliminar(e.id)"><mat-icon>delete_forever</mat-icon></button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.fila-alerta]="row.stock <= 5"></tr>
+            </table>
+          </div>
+          <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

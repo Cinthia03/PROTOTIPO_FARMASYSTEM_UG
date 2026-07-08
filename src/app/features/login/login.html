@@ -1,0 +1,29 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    
+    <div class="logo-section">
+      <span class="logo-icon">⚕️</span>
+      <h2>FARMASYSTEM</h2>
+      <p>Acceso al sistema farmaceutico</p>
+    </div>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Usuario</mat-label>
+      <mat-icon matPrefix>person</mat-icon>
+      <input matInput [(ngModel)]="usuario">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Contraseña</mat-label>
+      <mat-icon matPrefix>lock</mat-icon>
+      <input matInput type="password" [(ngModel)]="contrasena">
+    </mat-form-field>
+
+    <button mat-raised-button class="login-btn" (click)="login()">
+      Ingresar
+    </button>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+  </mat-card>
+</div>

@@ -1,0 +1,70 @@
+.header {
+  width: 100%;
+  padding: 14px 36px;
+  background: #133b4b; /* var(--color-primario) del sistema */
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 0 1px rgba(0,0,0,0.06);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo .icon {
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: background 0.22s ease, transform 0.22s ease;
+}
+
+.logo .icon:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.logo h1 {
+  margin: 0;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.logo p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  padding: 8px 18px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.logout-btn:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}

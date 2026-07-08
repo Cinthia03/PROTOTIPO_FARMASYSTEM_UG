@@ -1,0 +1,16 @@
+.footer {
+  width: 100%;
+  background: #133b4b; /* var(--color-primario) del sistema */
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  padding: 12px 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer span {
+  opacity: 0.9;
+}

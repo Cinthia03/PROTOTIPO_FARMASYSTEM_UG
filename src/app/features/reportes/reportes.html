@@ -1,0 +1,218 @@
+<div class="modulo-header">
+  <div class="icono">📊</div>
+  <div>
+    <h1>MÓDULO DE REPORTES</h1>
+    <p>Indicadores reales del sistema de base de datos en la nube</p>
+  </div>
+</div>
+
+<div class="contenedor">
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi-item">
+      <div class="kpi-icon kpi-icon--green">💰</div>
+      <div>
+        <div class="kpi-val">$ {{ ventasHoyTotal | number:'1.2-2' }}</div>
+        <div class="kpi-label">Ventas de hoy ({{ ventasHoyCantidad }} tx)</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon kpi-icon--red">⚠️</div>
+      <div>
+        <div class="kpi-val">{{ productosStockBajo }}</div>
+        <div class="kpi-label">Productos con stock bajo (≤10)</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon kpi-icon--amber">⏳</div>
+      <div>
+        <div class="kpi-val">{{ productosPorVencer }}</div>
+        <div class="kpi-label">Por vencer (≤30 días)</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon kpi-icon--blue">💊</div>
+      <div>
+        <div class="kpi-val">$ {{ valorInventarioTotal | number:'1.2-2' }}</div>
+        <div class="kpi-label">Valor total del inventario</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ventas por periodo -->
+  <div class="tabla-card">
+    <div class="tabla-card__header">
+      <div class="tabla-card__titulo-wrap">
+        <span class="tabla-card__icono">📈</span>
+        <h2 class="tabla-card__titulo">Ventas por periodo</h2>
+      </div>
+      <div class="filtros">
+        <button [class.activo]="periodo==='diario'" (click)="cambiarPeriodo('diario')">Diario</button>
+        <button [class.activo]="periodo==='semanal'" (click)="cambiarPeriodo('semanal')">Semanal</button>
+        <button [class.activo]="periodo==='mensual'" (click)="cambiarPeriodo('mensual')">Mensual</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Periodo / Fecha</th>
+            <th>N° Ventas Emitidas</th>
+            <th>Total Recaudado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of ventasPeriodoLista">
+            <td class="td-codigo">{{ v.periodo | date:'dd/MM/yyyy' }}</td>
+            <td>{{ v.num_ventas }} transacciones</td>
+            <td class="td-monto">$ {{ v.total_ventas | number:'1.2-2' }}</td>
+          </tr>
+          <tr *ngIf="ventasPeriodoLista.length === 0" class="fila-vacia">
+            <td colspan="3">No hay registros de ventas para este periodo.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Historial de facturas -->
+  <div class="tabla-card">
+    <div class="tabla-card__header">
+      <div class="tabla-card__titulo-wrap">
+        <span class="tabla-card__icono">🧾</span>
+        <h2 class="tabla-card__titulo">Historial General de Facturas</h2>
+      </div>
+      <span class="tabla-card__count">{{ facturas.length }} facturas</span>
+    </div>
+    <div class="table-responsive">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>N° Factura</th>
+            <th>Fecha Emisión</th>
+            <th>Cliente</th>
+            <th>Identificación</th>
+            <th>Método de Pago</th>
+            <th>Total Cobrado</th>
+            <th class="td-acciones">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of facturas">
+            <td class="td-codigo">#{{ f.id }}</td>
+            <td>{{ f.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td class="td-desc">{{ f.clientes?.nombre || 'CONSUMIDOR FINAL' }}</td>
+            <td>{{ f.clientes?.identificacion || '9999999999999' }}</td>
+            <td>
+              <span class="badge-metodo"
+                    [ngClass]="{
+                      'badge-metodo--efectivo': f.metodo_pago === 'efectivo',
+                      'badge-metodo--tarjeta': f.metodo_pago === 'tarjeta',
+                      'badge-metodo--transferencia': f.metodo_pago === 'transferencia'
+                    }">
+                {{ f.metodo_pago }}
+              </span>
+            </td>
+            <td class="td-monto">$ {{ f.total | number:'1.2-2' }}</td>
+            <td class="td-acciones">
+              <button class="btn-accion" (click)="imprimirFactura(f.id)">
+                👁️ Ver / Imprimir
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="facturas.length === 0" class="fila-vacia">
+            <td colspan="7">No existen facturas emitidas en el sistema.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Productos con mayor rotación -->
+  <div class="tabla-card">
+    <div class="tabla-card__header">
+      <div class="tabla-card__titulo-wrap">
+        <span class="tabla-card__icono">🔄</span>
+        <h2 class="tabla-card__titulo">Productos con mayor rotación</h2>
+      </div>
+      <span class="tabla-card__count">{{ rotacionProductos.length }} productos</span>
+    </div>
+    <div class="table-responsive">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Línea de Producto</th>
+            <th>Categoría Base</th>
+            <th>Unidades Vendidas</th>
+            <th>Ingresos Totales</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of rotacionProductos">
+            <td class="td-desc">{{ r.nombre }}</td>
+            <td>
+              <span class="badge-categoria"
+                    [ngClass]="{
+                      'badge-categoria--medicamentos': r.categoria === 'medicamentos',
+                      'badge-categoria--insumos': r.categoria === 'insumos',
+                      'badge-categoria--cuidado': r.categoria === 'cuidado'
+                    }">
+                {{ r.categoria }}
+              </span>
+            </td>
+            <td>{{ r.unidades_vendidas }} u</td>
+            <td class="td-monto td-monto--primario">$ {{ r.ingresos | number:'1.2-2' }}</td>
+          </tr>
+          <tr *ngIf="rotacionProductos.length === 0" class="fila-vacia">
+            <td colspan="4">No hay registros de rotación disponibles.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Clientes registrados -->
+  <div class="tabla-card">
+    <div class="tabla-card__header">
+      <div class="tabla-card__titulo-wrap">
+        <span class="tabla-card__icono">🧑‍🤝‍🧑</span>
+        <h2 class="tabla-card__titulo">Clientes Registrados</h2>
+      </div>
+      <span class="tabla-card__count">{{ clientes.length }} clientes</span>
+    </div>
+    <div class="table-responsive">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Identificación</th>
+            <th>Contacto</th>
+            <th>Dirección</th>
+            <th>N° Compras</th>
+            <th>Total Gastado</th>
+            <th>Última Compra</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of clientes">
+            <td class="td-desc">{{ c.nombre }}</td>
+            <td class="td-codigo">{{ c.identificacion }}</td>
+            <td>
+              <span>{{ c.telefono }}</span>
+              <span class="td-sub">{{ c.correo }}</span>
+            </td>
+            <td>{{ c.direccion }}</td>
+            <td>{{ c.compras }}</td>
+            <td class="td-monto">$ {{ c.totalGastado | number:'1.2-2' }}</td>
+            <td>{{ c.ultimaCompra | date:'dd/MM/yyyy' }}</td>
+          </tr>
+          <tr *ngIf="clientes.length === 0" class="fila-vacia">
+            <td colspan="7">No hay clientes registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,439 @@
+/* reportes.css — alineado al design system de FarmaSystem
+   (mismos tokens y patrones visuales que inventario.css / ventas.css) */
+:host {
+  /* Tokens compartidos con el resto del sistema */
+  --color-primario:          #133b4b;
+
+  /* Colores de módulo (heredados de Inventario, se usan aquí para
+     diferenciar categorías dentro de "Productos con mayor rotación") */
+  --color-medicamentos:        #1d6f5e;
+  --color-medicamentos-tabla:  #1d6f5ec7;
+  --color-medicamentos-suave:  #1d6f5e2a;
+
+  --color-insumos:             #4a4a8f;
+  --color-insumos-tabla:       #4a4a8fcc;
+  --color-insumos-suave:       #4a4a8f38;
+
+  --color-cuidado:             #a44b7a;
+  --color-cuidado-tabla:       #a44b7acc;
+  --color-cuidado-suave:       #a44b7a46;
+
+  /* Reportes es transversal a todos los módulos: usa el primario
+     como color de cabecera de tabla, igual que el banner del módulo */
+  --color-reportes-tabla:      #133b4bcc;
+
+  /* Estructura y neutros */
+  --color-bg:                #f1f5f9;
+  --color-card:              #ffffff;
+  --color-borde:             #e2e8f0;
+  --color-texto:             #0f172a;
+  --color-suave:             #64748b;
+  --color-fila:              #f8fafc;
+
+  /* Acciones globales — mismos tonos que inventario/ventas */
+  --color-guardar:           #16a34a;
+  --color-guardar-suave:     #f5fff5;
+  --color-nuevo:             #1d4ed8;
+  --color-nuevo-suave:       #eff6ff;
+  --color-alerta:            #b91c1c;
+  --color-alerta-suave:      #fee2e2;
+  --color-vencer:            #c2410c;
+  --color-vencer-suave:      #fff7ed;
+
+  --radio:                   12px;
+  --radio-sm:                8px;
+  --sombra:                  0 2px 8px rgba(0,0,0,0.07), 0 0 1px rgba(0,0,0,0.06);
+  --sombra-hover:            0 10px 32px rgba(0,0,0,0.13);
+
+  --font-titulo:              'Georgia','Times New Roman',serif;
+  --font-cuerpo:               'Segoe UI', system-ui, sans-serif;
+  --trans:                     0.22s ease;
+
+  display: block;
+  background: var(--color-bg);
+  min-height: 100vh;
+  font-family: var(--font-cuerpo);
+  color: var(--color-texto);
+}
+
+* { box-sizing: border-box; }
+
+/* ══════════════════════════════════════
+   HEADER DE MÓDULO — mismo lenguaje que header-banner
+══════════════════════════════════════ */
+.modulo-header {
+  background: var(--color-primario);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 32px;
+  margin: 28px 36px 32px;
+  border-radius: var(--radio);
+  box-shadow: 0 10px 25px rgba(19, 59, 75, 0.20);
+  position: relative;
+  overflow: hidden;
+}
+
+.modulo-header .icono {
+  width: 64px;
+  height: 64px;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: calc(var(--radio) * 0.8);
+}
+
+.modulo-header h1 {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.modulo-header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+}
+
+/* ══════════════════════════════════════
+   CONTENEDOR
+══════════════════════════════════════ */
+.contenedor {
+  padding: 0 36px 56px;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════
+   KPIs — mismo patrón "kpi-item" de Inventario
+══════════════════════════════════════ */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.kpi-item {
+  background: var(--color-card);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--sombra);
+  transition: box-shadow var(--trans), transform var(--trans);
+}
+
+.kpi-item:hover {
+  box-shadow: var(--sombra-hover);
+  transform: translateY(-2px);
+}
+
+.kpi-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radio-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+.kpi-icon--green { background: #dcfce7; }
+.kpi-icon--red   { background: #fee2e2; }
+.kpi-icon--amber { background: #fff7ed; }
+.kpi-icon--blue  { background: #dbeafe; }
+
+.kpi-val {
+  font-family: var(--font-titulo);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-texto);
+  line-height: 1;
+}
+
+.kpi-label {
+  font-size: 11.5px;
+  color: var(--color-suave);
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+/* ══════════════════════════════════════
+   TABLAS CARD — mismo patrón "tabla-card" de Inventario
+══════════════════════════════════════ */
+.tabla-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.tabla-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--color-reportes-tabla);
+}
+
+.tabla-card__titulo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tabla-card__icono {
+  font-size: 16px;
+  opacity: 0.85;
+}
+
+.tabla-card__titulo {
+  font-family: var(--font-titulo);
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--color-card);
+  margin: 0;
+}
+
+.tabla-card__count {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--color-card);
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 99px;
+  padding: 3px 12px;
+  white-space: nowrap;
+}
+
+/* Filtros embebidos en la cabecera de la card (Ventas por periodo) */
+.tabla-card__header .filtros {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tabla-card__header .filtros button {
+  border: 1.5px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.85);
+  padding: 6px 14px;
+  border-radius: 99px;
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 600;
+  font-family: var(--font-cuerpo);
+  transition: all var(--trans);
+}
+
+.tabla-card__header .filtros button:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.5);
+}
+
+.tabla-card__header .filtros button.activo {
+  background: var(--color-card);
+  border-color: var(--color-card);
+  color: var(--color-primario);
+}
+
+/* ── Scroll de tabla — contenido, no global ── */
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive::-webkit-scrollbar { height: 8px; }
+.table-responsive::-webkit-scrollbar-track { background: var(--color-fila); }
+.table-responsive::-webkit-scrollbar-thumb { background: var(--color-borde); border-radius: 99px; }
+.table-responsive::-webkit-scrollbar-thumb:hover { background: var(--color-suave); }
+
+.tabla {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.tabla th {
+  text-align: left;
+  padding: 11px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--color-texto);
+  background: var(--color-fila);
+  border-bottom: 2px solid var(--color-borde);
+  font-family: var(--font-titulo);
+  white-space: nowrap;
+}
+
+.tabla td {
+  padding: 11px 16px;
+  font-size: 12.5px;
+  color: var(--color-texto);
+  border-bottom: 1px solid var(--color-borde);
+  font-family: var(--font-cuerpo);
+  vertical-align: middle;
+}
+
+.tabla tbody tr:last-child td { border-bottom: none; }
+.tabla tbody tr:hover { background-color: var(--color-fila); }
+
+/* Columna principal fija al hacer scroll horizontal (mismo criterio que Inventario) */
+.tabla th:first-child, .tabla td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: inherit;
+}
+.tabla th:first-child { background: var(--color-fila); }
+.tabla tbody td:first-child { background: var(--color-card); box-shadow: 2px 0 4px rgba(0,0,0,0.04); }
+.tabla tbody tr:hover td:first-child { background: var(--color-fila); }
+
+.fila-vacia td {
+  text-align: center;
+  color: var(--color-suave);
+  font-style: italic;
+  padding: 32px 16px !important;
+}
+
+/* Columnas de datos especiales — mismo criterio que Inventario */
+.td-codigo {
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.4px;
+  color: var(--color-primario);
+}
+
+.td-desc { font-weight: 600; }
+.td-sub  { display: block; font-size: 10.5px; color: var(--color-suave); font-weight: 500; margin-top: 1px; }
+
+.td-monto {
+  font-weight: 700;
+  color: var(--color-guardar);
+  font-variant-numeric: tabular-nums;
+}
+
+.td-monto--primario { color: var(--color-primario); }
+.td-acciones { text-align: center; }
+
+/* Badges de categoría — mismo estilo que ventas.css */
+.badge-categoria {
+  background: var(--color-bg);
+  border: 1px solid var(--color-borde);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--color-suave);
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.badge-categoria--medicamentos { color: var(--color-medicamentos); border-color: var(--color-medicamentos-suave); background: var(--color-medicamentos-suave); }
+.badge-categoria--insumos      { color: var(--color-insumos); border-color: var(--color-insumos-suave); background: var(--color-insumos-suave); }
+.badge-categoria--cuidado      { color: var(--color-cuidado); border-color: var(--color-cuidado-suave); background: var(--color-cuidado-suave); }
+
+/* Badges de método de pago — mismos tonos de acciones globales */
+.badge-metodo {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.badge-metodo--efectivo      { background: var(--color-guardar-suave); color: var(--color-guardar); }
+.badge-metodo--tarjeta       { background: var(--color-nuevo-suave); color: var(--color-nuevo); }
+.badge-metodo--transferencia { background: var(--color-insumos-suave); color: var(--color-insumos); }
+
+/* Botón de acción sobre fila (ver/imprimir) — mismo criterio que btn-icono de Inventario */
+.btn-accion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.5px solid var(--color-borde);
+  background: var(--color-card);
+  color: var(--color-primario);
+  padding: 6px 12px;
+  border-radius: var(--radio-sm);
+  font-size: 11.5px;
+  font-weight: 600;
+  font-family: var(--font-cuerpo);
+  cursor: pointer;
+  transition: all var(--trans);
+  white-space: nowrap;
+}
+
+.btn-accion:hover {
+  border-color: var(--color-primario);
+  background: rgba(19, 59, 75, 0.06);
+  transform: translateY(-1px);
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — mismos breakpoints que el resto del sistema
+══════════════════════════════════════ */
+@media (max-width: 992px) {
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .modulo-header {
+    margin: 16px;
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+
+  .modulo-header h1 {
+    font-size: 20px;
+  }
+
+  .contenedor {
+    padding: 0 16px 32px;
+  }
+
+  .kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tabla-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tabla-card__header .filtros {
+    width: 100%;
+  }
+}
